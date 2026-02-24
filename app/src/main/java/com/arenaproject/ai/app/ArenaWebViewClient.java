@@ -24,15 +24,20 @@ public class ArenaWebViewClient extends WebViewClient {
     private final MainActivity activity;
     private final ProgressBar progressBar;
 
-    // Allowed domains: arena.ai + OAuth providers
     private static final List<String> ALLOWED_DOMAINS = Arrays.asList(
             "arena.ai",
+            // OAuth providers
             "accounts.google.com",
             "appleid.apple.com",
             "login.microsoftonline.com",
             "login.live.com",
-            "github.com",              // GitHub OAuth
-            "auth0.com"               // Potential auth provider
+            "github.com",
+            "auth0.com",
+            "google.com",
+            "gstatic.com",
+            "googleapis.com",
+            "recaptcha.net",
+            "googleusercontent.com"
     );
 
     public ArenaWebViewClient(MainActivity activity, ProgressBar progressBar) {
@@ -49,19 +54,27 @@ public class ArenaWebViewClient extends WebViewClient {
             return false;
         }
 
-        // Check if the URL belongs to an allowed domain
+        if (host.equals("help.arena.ai")) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                activity.startActivity(intent);
+            } catch (Exception ignored) {
+
+            }
+            return true;
+        }
+
         for (String domain : ALLOWED_DOMAINS) {
             if (host.equals(domain) || host.endsWith("." + domain)) {
-                return false; // Allow in WebView
+                return false;
             }
         }
 
-        // External URL - open in system browser
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             activity.startActivity(intent);
-        } catch (Exception e) {
-            // No browser installed, ignore
+        } catch (Exception ignored) {
+
         }
         return true;
     }
@@ -80,8 +93,6 @@ public class ArenaWebViewClient extends WebViewClient {
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
-
-        // Persist cookies after page load
         android.webkit.CookieManager.getInstance().flush();
     }
 
@@ -89,7 +100,6 @@ public class ArenaWebViewClient extends WebViewClient {
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
 
-        // Only handle main frame errors
         if (request.isForMainFrame()) {
             view.loadData(getErrorHtml("Something went wrong",
                     "Unable to load the page. Please check your connection."),
@@ -99,7 +109,6 @@ public class ArenaWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        // NEVER proceed on SSL errors - security requirement
         handler.cancel();
         view.loadData(getErrorHtml("Security Error",
                 "The connection to this site is not secure. Please try again later."),

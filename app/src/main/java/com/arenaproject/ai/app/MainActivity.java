@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private long lastBackPressTime = 0;
     private static final long BACK_PRESS_INTERVAL = 2000; // 2 seconds
 
-    // Activity result launcher for file chooser
     private final ActivityResultLauncher<Intent> fileChooserLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -101,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Edge-to-edge display
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         progressBar = findViewById(R.id.progress_bar);
         webView = findViewById(R.id.web_view);
