@@ -94,6 +94,66 @@ public class ArenaWebViewClient extends WebViewClient {
             progressBar.setVisibility(View.GONE);
         }
         android.webkit.CookieManager.getInstance().flush();
+
+        if (url != null && url.contains("arena.ai")) {
+            injectScrollFix(view);
+        }
+    }
+
+    /**
+     * Injects CSS to fix scrolling in Battle Mode model response panels.
+     * ----
+     * Arena.ai's response cards use:
+     * - Parent card: overflow-hidden (clips scrollable content)
+     * - Response div: no-scrollbar + max-h-[max(50svh,350px)] overflow-y-auto
+     * ----
+     * The fix removes the scrollbar hiding and ensures the parent doesn't
+     * clip touch-scroll gestures. A MutationObserver re-applies for
+     * dynamically rendered responses (React SPA).
+     */
+    private void injectScrollFix(WebView view) {
+        String js = "(function() {"
+                + "  if (document.getElementById('arena-scroll-fix')) return;"
+                + "  var style = document.createElement('style');"
+                + "  style.id = 'arena-scroll-fix';"
+                + "  style.textContent = '"
+                // Show scrollbar on .no-scrollbar elements
+                + "    .no-scrollbar::-webkit-scrollbar {"
+                + "      display: block !important;"
+                + "      width: 4px !important;"
+                + "    }"
+                + "    .no-scrollbar::-webkit-scrollbar-track {"
+                + "      background: transparent !important;"
+                + "    }"
+                + "    .no-scrollbar::-webkit-scrollbar-thumb {"
+                + "      background: rgba(255,255,255,0.2) !important;"
+                + "      border-radius: 4px !important;"
+                + "    }"
+                + "    .no-scrollbar {"
+                + "      scrollbar-width: thin !important;"
+                + "      -webkit-overflow-scrolling: touch !important;"
+                + "      overflow-y: auto !important;"
+                + "    }"
+                // Prevent parent card from clipping scroll gestures
+                + "    .bg-surface-primary.overflow-hidden {"
+                + "      overflow: visible !important;"
+                + "    }"
+                + "    div[class*=\"overflow-hidden\"][class*=\"rounded-xl\"][class*=\"border\"] {"
+                + "      overflow: clip !important;"
+                + "      overflow-y: visible !important;"
+                + "    }"
+                + "  ';"
+                + "  document.head.appendChild(style);"
+                // MutationObserver: fix inline overflow:hidden on dynamic content
+                + "  var observer = new MutationObserver(function() {"
+                + "    document.querySelectorAll('.no-scrollbar').forEach(function(el) {"
+                + "      el.style.overflowY = 'auto';"
+                + "      el.style.webkitOverflowScrolling = 'touch';"
+                + "    });"
+                + "  });"
+                + "  observer.observe(document.body, { childList: true, subtree: true });"
+                + "})();";
+        view.evaluateJavascript(js, null);
     }
 
     @Override

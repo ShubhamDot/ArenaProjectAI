@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Arena AI</string>
+    <string name="app_name">Arena Project AI</string>
     <string name="press_back_to_exit">Press back again to exit</string>
     <string name="no_internet">No internet connection</string>
     <string name="permission_camera_granted">Camera access enabled</string>
