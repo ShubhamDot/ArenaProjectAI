@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Stylized "A" letter for Arena AI -->
+    <!-- Main triangle body of 'A' -->
+    <path
+        android:fillColor="#6366f1"
+        android:pathData="M54,28 L36,76 h8 l3,-9 h14 l3,9 h8 L54,28z M49,61 l5,-15 l5,15 z" />
+
+    <!-- Accent dot (AI indicator) -->
+    <path
+        android:fillColor="#a78bfa"
+        android:pathData="M66,36 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0" />
+
+</vector>

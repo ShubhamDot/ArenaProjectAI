@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base app theme - dark to match arena.ai -->
+    <style name="Theme.ArenaAI" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/arena_bg</item>
+        <item name="android:statusBarColor">@color/arena_bg</item>
+        <item name="android:navigationBarColor">@color/arena_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimary">@color/arena_primary</item>
+        <item name="colorPrimaryDark">@color/arena_primary_dark</item>
+        <item name="colorAccent">@color/arena_primary</item>
+    </style>
+
+    <!-- Splash screen theme -->
+    <style name="Theme.ArenaAI.Splash" parent="Theme.ArenaAI">
+        <item name="android:windowBackground">@color/arena_bg</item>
+    </style>
+
+</resources>

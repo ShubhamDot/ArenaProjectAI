@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="arena_bg">#0a0a0a</color>
+    <color name="arena_surface">#1a1a2e</color>
+    <color name="arena_primary">#6366f1</color>
+    <color name="arena_primary_dark">#4f46e5</color>
+    <color name="arena_text">#e0e0e0</color>
+    <color name="arena_text_secondary">#999999</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>
