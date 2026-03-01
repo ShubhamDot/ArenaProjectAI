@@ -6,7 +6,7 @@ import android.util.Log;
 import android.webkit.CookieManager;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
+import androidx.security.crypto.MasterKey;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -91,11 +91,13 @@ public final class CookieHelper {
 
     private static SharedPreferences getEncryptedPrefs(Context context)
             throws GeneralSecurityException, IOException {
-        String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+        MasterKey masterKey = new MasterKey.Builder(context)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build();
         return EncryptedSharedPreferences.create(
+                context,
                 PREFS_NAME,
                 masterKey,
-                context,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         );
