@@ -4,7 +4,6 @@ import android.app.Application;
 import android.webkit.CookieManager;
 
 /**
- * Application class for Arena AI.
  * Initializes cookie management at the application level.
  */
 public class ArenaApplication extends Application {
